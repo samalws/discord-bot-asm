@@ -321,6 +321,11 @@ async def on_message(message):
     thisProc["gas"] = FULL_GAS
     await message.channel.send("Refueled process {0}'s gas to {1}".format(id,allProcs[id]["gas"]))
     await interpretCode(thisProc,"refueled",id,message.channel,message.content[1:],message.author)
+  elif message.content == "$allowedList":
+    if message.channel.id in allowedProcs:
+      await message.channel.send("Processes allowed in this channel: {0}".format(str(list(allowedProcs[message.channel.id].keys()))))
+    else:
+      await message.channel.send("No processes allowed in this channel")
   elif message.content[:len("$allow ")] == "$allow ":
     id = message.content[len("$allow "):]
     try:
@@ -343,6 +348,8 @@ async def on_message(message):
     try:
       del thisProc["channels"][message.channel.id]
       del allowedProcs[message.channel.id][id]
+      if len(allowedProcs[message.channel.id]) == 0:
+        del allowedProcs[message.channel.id]
     except KeyError as e:
       await message.channel.send("Bot was already banned in this channel")
       return
@@ -361,7 +368,8 @@ async def on_message(message):
     await message.channel.send("All commands and their gas prices: ```" + json.dumps(cmdStrGas) + "```")
     await message.channel.send("Rate limits: max string size **{0}**, max number of vars **{1}**, gas per refuel **{2}**, dead process kill time **{3}** seconds".format(STRING_MAXSIZE,MAX_NVARS,FULL_GAS,TIME_KILL))
     await message.channel.send("To start a process: $addProc \`\`\` (newline) code (newline) \`\`\`")
-    await message.channel.send("Other commands: $allow [pid], $ban [pid], $gas [pid], $refuel [pid]")
+    await message.channel.send("Other commands: $allow [pid], $ban [pid], $allowedList, $gas [pid], $refuel [pid]")
+    await message.channel.send("See https://github.com/samalws/discord-bot-asm/blob/main/README.md for more info")
   elif message.channel.id in allowedProcs:
     await asyncio.gather(*[interpretCode(allProcs[id],"msg",id,message.channel,message.content,message.author) for id in allowedProcs[message.channel.id].keys()])
 
