@@ -5,6 +5,8 @@ These programs can read and send messages, as well as choosing random numbers, m
 The language is Turing complete, but there are gas limits (as in Ethereum) preventing you from running too many commands and taking up all the bot's compute time.
 The bot has a permission system allowing you to choose which programs can access which channels.
 
+Invite link for an instance of the bot that I'm hosting: https://discord.com/oauth2/authorize?client_id=964712994451886102&permissions=3072&scope=bot
+
 ## Commands:
 
 - $addProc \`\`\` \[code\] \`\`\` - Spawn a new process with specified assembly code (see below for description of the assembly language). The process is given a process ID (PID) which can be used to identify it.
