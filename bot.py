@@ -44,6 +44,7 @@ NWLN = 29
 HTTP = 30
 
 cmdStrs = {
+  "NWLN": NWLN,
   "MOV": MOV,
   "ADD": ADD,
   "MUL": MUL,
@@ -52,28 +53,27 @@ cmdStrs = {
   "JE": JE,
   "JG": JG,
   "STR": STR,
-  "GAS": GAS,
+  "INT": INT,
   "UPR": UPR,
   "LWR": LWR,
+  "GAS": GAS,
   "SEND": SEND,
   "READ": READ,
   "CHN": CHN,
   "USR": USR,
   "AT": AT,
   "SLP": SLP,
-  "EXIT": EXIT,
   "DUMP": DUMP,
   "RNG": RNG,
   "PID": PID,
   "ALLW": ALLW,
-  "INT": INT,
   "EMJI": EMJI,
   "LEN": LEN,
   "NVAR": NVAR,
   "ARBW": ARBW,
   "ARBR": ARBR,
-  "NWLN": NWLN,
   "HTTP": HTTP,
+  "EXIT": EXIT,
 }
 
 cmdGases = {
