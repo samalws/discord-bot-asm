@@ -1,0 +1,92 @@
+$addProc ```
+start:
+LITINT zero 0
+LITINT one 1
+LITINT two 2
+LITINT three 3
+LITINT four 4
+LITINT negOne -1
+LITINT five 5
+NWLN nwln
+LITSTR zeroChr black_large_square
+LITSTR oneChr x
+CHN c
+EMJI zeroChr c
+EMJI oneChr c
+LITSTR oneMsgPrefix !
+LITSTR zeroMsgPrefix .
+
+zeroBoard:
+LITINT row 0
+LITINT idx 0
+zeroBoardOuter:
+LITINT col 0
+zeroBoardInner:
+ARBW idx zero
+ADD idx one
+ADD col one
+JG five col zeroBoardInner
+ADD row one
+JG five row zeroBoardOuter
+
+printBoard:
+LITINT row 0
+LITINT idx 0
+MOV printStr nwln
+printBoardOuter:
+LITINT col 0
+printBoardInner:
+
+ARBR x idx
+je x one addOne
+
+addZero:
+ADD printStr zeroChr
+JMP afterAdds
+
+addOne:
+ADD printStr oneChr
+
+afterAdds:
+
+ADD idx one
+ADD col one
+JG five col printBoardInner
+ADD printStr nwln
+ADD row one
+JG five row printBoardOuter
+
+CHN channel
+SEND channel printStr
+EXIT
+
+msg:
+
+READ msgVal
+MOV x msgVal
+SBST x zero one
+JE x oneMsgPrefix oneMsg
+JE x zeroMsgPrefix zeroMsg
+exit
+
+oneMsg:
+MOV newVal one
+JMP bothMsg
+zeroMsg:
+MOV newVal zero
+bothMsg:
+SBST msgVal one four
+MOV row msgVal
+MOV col msgVal
+SBST row zero one
+SBST col two three
+INT row
+INT col
+ADD row negOne
+ADD col negOne
+MOV idx row
+MUL idx five
+ADD idx col
+ARBW idx newVal
+JMP printBoard
+```

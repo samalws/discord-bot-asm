@@ -1,0 +1,42 @@
+$addProc ```
+start:
+lit hiMsg str Ben?
+lit prefix str ben 
+lit prefixLen int 4
+lit zero int 0
+lit one int 1
+lit two int 2
+lit yesMsg str yes
+lit noMsg str no
+lit hohohoMsg str hohoho
+lit eughMsg str eugh
+refueled:
+allowed:
+sayHi:
+chn channel
+send channel hiMsg
+exit
+msg:
+read inp
+sbst inp zero prefixLen
+je inp prefix randMsg
+exit
+randMsg:
+chn channel
+rng r
+je r zero yes
+je r one no
+je r two hohoho
+eugh:
+send channel eughMsg
+exit
+hohoho:
+send channel hohohoMsg
+exit
+yes:
+send channel yesMsg
+exit
+no:
+send channel noMsg
+exit
+```

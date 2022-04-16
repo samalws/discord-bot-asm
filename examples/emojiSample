@@ -1,0 +1,28 @@
+$addProc ```
+start:
+LITSTR msgA !setChannel
+LITSTR msgB !sendEmoji 
+LITINT zero 0
+MOV lenB msgB
+LEN lenB
+CHN channel
+EXIT
+msg:
+READ msg
+JE msg msgA msgAResp
+SBST msg zero lenB
+JE msg msgB msgBResp
+EXIT
+msgAResp:
+CHN channel
+EXIT
+msgBResp:
+READ a
+MOV q a
+LEN q
+SBST a lenB q
+EMJI a channel
+CHN c
+SEND c a
+EXIT
+```
