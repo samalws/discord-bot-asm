@@ -4,9 +4,10 @@ import random
 import json
 import requests
 import os
+import time
 
 STRING_MAXSIZE = 4000
-OUT_OF_GAS_KILL = 60*60*24
+TIME_KILL = 60*60*24
 MAX_NVARS = 500
 FULL_GAS = 10000
 
@@ -158,7 +159,7 @@ async def interpretCode(thisProc,startLbl,id,chn,msg,usr):
         thisProc["gas"] = 0
         await asyncio.sleep(10)
         consecOutOfGas += 10
-        if consecOutOfGas >= OUT_OF_GAS_KILL:
+        if consecOutOfGas >= TIME_KILL:
           del allProcs[id]
           break
         else:
@@ -294,6 +295,7 @@ async def on_message(message):
     thisProc["vars"] = {}
     thisProc["gas"] = FULL_GAS
     thisProc["channels"] = { message.channel.id: True }
+    thisProc["lastBan"] = -1
     id = str(len(usedIds))
     usedIds[id] = id
     allProcs[id] = thisProc
@@ -301,6 +303,14 @@ async def on_message(message):
     allowedProcs[message.channel.id][id] = True
     await message.channel.send("Started process id {0} with gas {1}".format(id,thisProc["gas"]))
     await interpretCode(thisProc,"start",id,message.channel,message.content[1:],message.author)
+    while True:
+      try:
+        await asyncio.sleep(TIME_KILL)
+        if len(thisProc["channels"]) == 0 and time.time() - thisProc["lastBan"] > TIME_KILL:
+          del allProcs[id]
+          break
+      except:
+        break
   elif message.content[:len("$refuel ")] == "$refuel ":
     id = message.content[len("$refuel "):]
     try:
@@ -336,6 +346,7 @@ async def on_message(message):
     except KeyError as e:
       await message.channel.send("Bot was already banned in this channel")
       return
+    thisProc["lastBan"] = time.time()
     await message.channel.send("Banned process {0} in this channel".format(id))
     await interpretCode(thisProc,"banned",id,message.channel,message.content[1:],message.author)
   elif message.content[:len("$gas ")] == "$gas ":
@@ -348,7 +359,7 @@ async def on_message(message):
     await message.channel.send("Process {0} has {1} gas".format(id,thisProc["gas"]))
   elif message.content == "$help":
     await message.channel.send("All commands and their gas prices: ```" + json.dumps(cmdStrGas) + "```")
-    await message.channel.send("Rate limits: max string size **{0}**, max number of vars **{1}**, gas per refuel **{2}**, dead process kill time **{3}** seconds".format(STRING_MAXSIZE,MAX_NVARS,FULL_GAS,OUT_OF_GAS_KILL))
+    await message.channel.send("Rate limits: max string size **{0}**, max number of vars **{1}**, gas per refuel **{2}**, dead process kill time **{3}** seconds".format(STRING_MAXSIZE,MAX_NVARS,FULL_GAS,TIME_KILL))
     await message.channel.send("To start a process: $addProc \`\`\` (newline) code (newline) \`\`\`")
     await message.channel.send("Other commands: $allow [pid], $ban [pid], $gas [pid], $refuel [pid]")
   elif message.channel.id in allowedProcs:

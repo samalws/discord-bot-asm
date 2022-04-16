@@ -1,0 +1,14 @@
+$addProc ```
+start:
+LITSTR a http://worldtimeapi.org/api/timezone/America/Chicago
+HTTP a e
+CHN c
+STR a
+STR e
+LITINT w 0
+LITINT x 1000
+SBST a w x
+SEND c a
+SEND c e
+EXIT
+```
