@@ -1,0 +1,28 @@
+$addProc ```
+# logs all chats it sees
+# see log with "!viewLog"
+
+start:
+LITSTR viewLogMsg !viewLog
+# note trailing whitespace on log and space
+LITSTR log 
+LITSTR space  
+EXIT
+
+msg:
+READ m
+USR u
+AT u
+ADD log u
+ADD log space
+ADD log m
+ADD log space
+
+JE m viewLogMsg printLog
+EXIT
+
+printLog:
+CHN c
+SEND c log
+EXIT
+```

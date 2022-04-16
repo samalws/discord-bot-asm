@@ -1,0 +1,36 @@
+$addProc ```
+# you can make this bot send a message in another channel
+# !setChannel chooses what channel to send it in
+# !sendMsg sends a message in that channel
+
+start:
+LITSTR msgA !setChannel
+# note trailing whitespace on sendMsg
+LITSTR msgB !sendMsg 
+LITINT zero 0
+MOV lenB msgB
+LEN lenB
+CHN channel
+EXIT
+
+msg:
+READ msg
+JE msg msgA msgAResp
+SBST msg zero lenB
+JE msg msgB msgBResp
+READ msg
+EXIT
+
+msgAResp:
+CHN channel
+EXIT
+
+msgBResp:
+# first strip off the prefix ("!sendMsg ") from the message
+READ a
+MOV q a
+LEN q
+SBST a lenB q
+SEND channel a
+EXIT
+```

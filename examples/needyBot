@@ -1,0 +1,28 @@
+$addProc ```
+# asks for gas whenever its gas total drops below 1000
+
+start:
+LITSTR thanksMsg thanks :)
+LITSTR gasReqMsg HELP I NEED MORE FUEL
+LITINT gasCutoff 1000
+LITINT sleepAmt 10
+
+# main loop where we keep asking for gas
+loop:
+SLP sleepAmt
+GAS g
+JG gasCutoff g reqGas
+JMP loop
+
+reqGas:
+CHN channel
+SEND channel gasReqMsg
+JMP loop
+
+# when user refuels or adds to server, thank the user
+refueled:
+added:
+CHN channel
+SEND channel thanksMsg
+EXIT
+```

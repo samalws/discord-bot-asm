@@ -1,14 +1,14 @@
 $addProc ```
+# sends an http request to figure out what time it is using the worldtime API
+# prints out the response and the response code
+
 start:
 LITSTR a http://worldtimeapi.org/api/timezone/America/Chicago
-HTTP a e
-CHN c
+HTTP a err
+CHN channel
 STR a
-STR e
-LITINT w 0
-LITINT x 1000
-SBST a w x
-SEND c a
-SEND c e
+STR err
+SEND channel a
+SEND channel err
 EXIT
 ```

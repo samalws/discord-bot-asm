@@ -1,4 +1,8 @@
 $addProc ```
+# a bingo board bot
+# type "!2 5" to cross off spot 2,5
+# type ".2 5" to remove X on spot 2,5
+
 start:
 LITINT zero 0
 LITINT one 1
@@ -16,6 +20,8 @@ EMJI oneChr c
 LITSTR oneMsgPrefix !
 LITSTR zeroMsgPrefix .
 
+# set board to all 0s
+# we use ARBW to write to numbered keys in our memory
 zeroBoard:
 LITINT row 0
 LITINT idx 0
@@ -28,6 +34,7 @@ ADD col one
 JG five col zeroBoardInner
 ADD row one
 JG five row zeroBoardOuter
+# since no jump afterwards, we go straight into printBoard
 
 printBoard:
 LITINT row 0
@@ -72,14 +79,17 @@ exit
 oneMsg:
 MOV newVal one
 JMP bothMsg
+
 zeroMsg:
 MOV newVal zero
+
 bothMsg:
 SBST msgVal one four
 MOV row msgVal
 MOV col msgVal
 SBST row zero one
 SBST col two three
+# parse user ints
 INT row
 INT col
 ADD row negOne
