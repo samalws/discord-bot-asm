@@ -11,6 +11,7 @@ Invite link for an instance of the bot that I'm hosting: https://discord.com/oau
 
 - $addProc \`\`\` \[code\] \`\`\` - Spawn a new process with specified assembly code (see below for description of the assembly language). The process is given a process ID (PID) which can be used to identify it.
 - $allow \[pid\] - Allow a process in the current channel. This allows the process to read new (but not old) messages, and send messages. (By default, processess are allowed in the channel they're created in. This can be undone using $ban).
+- $allowNoPrefix \[pid\] - Allow a process to send messages in the current channel without the "\[pid\]" prefix that usually comes before them. Undo this by running $allow \[pid\]
 - $ban \[pid\] - Ban a process from the current channel. This can be undone by using $allow again.
 - $allowedList - View a list of all processes (listed by pid) allowed in the current channel.
 - $gas \[pid\] - Check how much gas a process has left.
